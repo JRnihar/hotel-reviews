@@ -1,8 +1,15 @@
 import React from "react";
-import { Button, Card, Col, Row } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+
 
 const ShowRoom = (props) => {
-  const { name, picture, price } = props.room;
+  const { id,name, picture, price } = props.room;
+  const navigate=useNavigate()
+
+  const handleGoButton=(id)=>{
+    // navigate(`roomes${id}`)
+    navigate(`/roomes/${id}`)
+  }
   return (
     <div className="col-md-4  p-3 ">
       <div class="card-group" >
@@ -14,7 +21,7 @@ const ShowRoom = (props) => {
              {price}
             </p>
             <p class="card-text">
-             <button className="btn btn-primary">Go tO</button>
+             <button onClick={()=>handleGoButton(id)} className="btn btn-primary">Go tO</button>
             </p>
           </div>
         </div>

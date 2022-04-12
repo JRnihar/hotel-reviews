@@ -1,5 +1,6 @@
 import React from 'react';
 import { Carousel } from 'react-bootstrap';
+import Rommes from '../Roomes/Rommes';
 
 
 const Home = () => {
@@ -43,6 +44,8 @@ const Home = () => {
     </Carousel.Caption>
   </Carousel.Item>
 </Carousel>
+
+<Rommes></Rommes>
      </div>
 
     

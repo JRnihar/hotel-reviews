@@ -9,7 +9,7 @@ const Header = () => {
            <Link to='/roomes'>Roomes</Link>
            <Link to='/login'>LogIn</Link> */}
 
-<Navbar collapseOnSelect expand="lg" bg="dark" variant="dark" className='container'>
+<Navbar className='mb-5' fixed='top' collapseOnSelect expand="lg" bg="dark" variant="dark">
   <Container>
   <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>
   <Navbar.Toggle aria-controls="responsive-navbar-nav" />
