@@ -1,15 +1,23 @@
 import React, { useRef, useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { useSendPasswordResetEmail, useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import auth from '../../firebase.init';
+import Loding from '../Loding/Loding';
 import SocialLogIn from '../socialLogIn/SocialLogIn';
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Login = () => {
     const emailRef=useRef('')
     const passwordRef=useRef('')
     const navigate=useNavigate()
     const[email,setEmail]=useState()
+    const location = useLocation();
+    
+
+    let from = location.state?.from?.pathname || "/";
 
 
 
@@ -26,9 +34,12 @@ const Login = () => {
     const navigateRegister=(e)=>{
         navigate('/register')
     }
+    if (loading) {
+        return <Loding></Loding>;
+    }
 
     if(user){
-        navigate('/')
+          navigate(from, { replace: true });
     }
     let errorElement;
     if (error) {
@@ -67,11 +78,12 @@ const Login = () => {
                 </Button>
                 <button className='btn btn-primary ms-3' onClick={async () => {
                     await sendPasswordResetEmail(email);
-                    alert('Sent email');
+                    toast('Sent email');
                 }}>reset</button>
                 {errorElement}
             </Form>
             <SocialLogIn></SocialLogIn>
+            <ToastContainer />
             <p className='mt-5 '>
                 new to hotel ?   <button className=' btn btn-primary' onClick={navigateRegister}>  please register</button>
             </p>

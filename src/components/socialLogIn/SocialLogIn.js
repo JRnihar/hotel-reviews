@@ -2,6 +2,7 @@ import React from 'react';
 import { useSignInWithGithub, useSignInWithGoogle } from 'react-firebase-hooks/auth';
 
 import auth from '../../firebase.init';
+import Loding from '../Loding/Loding';
 
 const SocialLogIn = () => {
     const [signInWithGoogle, user, loading, error] = useSignInWithGoogle(auth);
@@ -9,6 +10,9 @@ const SocialLogIn = () => {
     let errorElement;
     if (error || error1) {
         errorElement = <p className='text-danger'>Error: {error?.message} {error1?.message}</p>
+    }
+    if (loading || loading1 ) {
+        return <Loding></Loding>;
     }
 
     return (

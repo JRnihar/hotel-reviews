@@ -4,6 +4,7 @@ import { useCreateUserWithEmailAndPassword, useSendEmailVerification } from 'rea
 import auth from '../../firebase.init'
 import SocialLogIn from '../socialLogIn/SocialLogIn';
 import { sendEmailVerification } from 'firebase/auth';
+import Loding from '../Loding/Loding';
 
 const Register = () => {
     const [email, setEmail] = useState('');
@@ -15,7 +16,7 @@ const Register = () => {
         user,
         loading,
         error,
-    ] = useCreateUserWithEmailAndPassword(auth);
+    ] = useCreateUserWithEmailAndPassword(auth, { sendEmailVerification:true});
 
     
 
@@ -27,14 +28,10 @@ const Register = () => {
     if (user) {
         navigate('/login')
     }
-    const veryfyEmail = () => {
-        sendEmailVerification(auth.currentUser)
-            .then(() => {
-                // Email verification sent!
-                // ...
-                console.log('email verification sent');
-            });
+    if (loading) {
+        return <Loding></Loding>;
     }
+    
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -111,7 +108,7 @@ const Register = () => {
                                                 disabled={!agree}
                                                     type="submit"
                                                     class="btn btn-primary btn-lg"
-                                                    onClick={veryfyEmail}
+                                                
                                                     
                                                     >Register</button>
                                             </div>
