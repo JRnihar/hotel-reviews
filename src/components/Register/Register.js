@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
+import { useCreateUserWithEmailAndPassword, useSendEmailVerification } from 'react-firebase-hooks/auth';
 import auth from '../../firebase.init'
 import SocialLogIn from '../socialLogIn/SocialLogIn';
+import { sendEmailVerification } from 'firebase/auth';
 
 const Register = () => {
     const [email, setEmail] = useState('');
@@ -15,22 +16,35 @@ const Register = () => {
         loading,
         error,
     ] = useCreateUserWithEmailAndPassword(auth);
+
+    
+
     const navigate = useNavigate()
 
     const navigateLogin = (e) => {
         navigate('/login')
     }
     if (user) {
-        navigate('/')
+        navigate('/login')
+    }
+    const veryfyEmail = () => {
+        sendEmailVerification(auth.currentUser)
+            .then(() => {
+                // Email verification sent!
+                // ...
+                console.log('email verification sent');
+            });
     }
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        
 
         console.log(e.target)
         if (agree) {
             createUserWithEmailAndPassword(email, password, name)
         }
+        
     }
 
     return (
@@ -96,7 +110,10 @@ const Register = () => {
                                                 <button
                                                 disabled={!agree}
                                                     type="submit"
-                                                    class="btn btn-primary btn-lg">Register</button>
+                                                    class="btn btn-primary btn-lg"
+                                                    onClick={veryfyEmail}
+                                                    
+                                                    >Register</button>
                                             </div>
 
                                         </form>

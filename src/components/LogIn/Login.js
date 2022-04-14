@@ -1,6 +1,6 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
-import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
+import { useSendPasswordResetEmail, useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { useNavigate } from 'react-router-dom';
 import auth from '../../firebase.init';
 import SocialLogIn from '../socialLogIn/SocialLogIn';
@@ -9,6 +9,7 @@ const Login = () => {
     const emailRef=useRef('')
     const passwordRef=useRef('')
     const navigate=useNavigate()
+    const[email,setEmail]=useState()
 
 
 
@@ -18,6 +19,9 @@ const Login = () => {
         loading,
         error,
       ] = useSignInWithEmailAndPassword(auth);
+    const [sendPasswordResetEmail] = useSendPasswordResetEmail(
+        auth
+    );
 
     const navigateRegister=(e)=>{
         navigate('/register')
@@ -36,6 +40,7 @@ const Login = () => {
         const email=emailRef.current.value
         const pasword=passwordRef.current.value
         signInWithEmailAndPassword(email, pasword);
+        
     }
 
     return (
@@ -44,7 +49,7 @@ const Login = () => {
             <Form onSubmit={handelSubmit}>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                     <Form.Label>Email address</Form.Label>
-                    <Form.Control ref={emailRef} type="email" placeholder="Enter email" required />
+                    <Form.Control onChange={(e) => setEmail(e.target.value)} ref={emailRef} type="email" placeholder="Enter email" required />
                     <Form.Text className="text-muted">
                         We'll never share your email with anyone else.
                     </Form.Text>
@@ -60,6 +65,10 @@ const Login = () => {
                 <Button variant="primary" type="submit">
                     Submit
                 </Button>
+                <button className='btn btn-primary ms-3' onClick={async () => {
+                    await sendPasswordResetEmail(email);
+                    alert('Sent email');
+                }}>reset</button>
                 {errorElement}
             </Form>
             <SocialLogIn></SocialLogIn>
