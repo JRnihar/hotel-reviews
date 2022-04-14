@@ -3,6 +3,7 @@ import { Button, Form } from 'react-bootstrap';
 import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { useNavigate } from 'react-router-dom';
 import auth from '../../firebase.init';
+import SocialLogIn from '../socialLogIn/SocialLogIn';
 
 const Login = () => {
     const emailRef=useRef('')
@@ -25,6 +26,10 @@ const Login = () => {
     if(user){
         navigate('/')
     }
+    let errorElement;
+    if (error) {
+        errorElement = <p className='text-danger'>Error: {error?.message}</p>
+    }
 
     const handelSubmit=(e)=>{
         e.preventDefault()
@@ -35,7 +40,7 @@ const Login = () => {
 
     return (
         <div className='container w-50 mx-auto'>
-            <h2 className='text-center m-5'>please log In</h2>
+            <h2 className='text-center mt-5'>please log In</h2>
             <Form onSubmit={handelSubmit}>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                     <Form.Label>Email address</Form.Label>
@@ -55,7 +60,9 @@ const Login = () => {
                 <Button variant="primary" type="submit">
                     Submit
                 </Button>
+                {errorElement}
             </Form>
+            <SocialLogIn></SocialLogIn>
             <p className='mt-5 '>
                 new to hotel ?   <button className=' btn btn-primary' onClick={navigateRegister}>  please register</button>
             </p>
